@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبر لغتك الإنجليزية - English Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* التصميم الأساسي */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #f72585;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --danger: #f72585;
+            --warning: #ffba08;
+            --easy: #2ec4b6;
+            --medium: #ff9f1c;
+            --hard: #e71d36;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --music: #7209b7;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* الشعار والعنوان */
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 20px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .logo {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            color: white;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 4px;
+            background-color: var(--accent);
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 20px auto;
+            line-height: 1.6;
+        }
+        
+        /* شاشة البداية */
+        .start-screen, .level-screen, .quiz-screen, .result-screen {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px var(--shadow);
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease;
+            display: none;
+        }
+        
+        .start-screen.active, .level-screen.active, .quiz-screen.active, .result-screen.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* أزرار البداية */
+        .start-btn, .level-btn, .submit-btn, .restart-btn, .music-btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 18px 45px;
+            font-size: 1.4rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px auto;
+            display: block;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+        }
+        
+        .music-btn {
+            background: linear-gradient(to right, var(--music), #9d4edd);
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px;
+        }
+        
+        .start-btn:hover, .level-btn:hover, .submit-btn:hover, .restart-btn:hover, .music-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(67, 97, 238, 0.4);
+        }
+        
+        .start-btn:active, .level-btn:active, .submit-btn:active, .restart-btn:active, .music-btn:active {
+            transform: translateY(0);
+        }
+        
+        .start-icon {
+            margin-right: 10px;
+            font-size: 1.6rem;
+        }
+        
+        /* شاشة اختيار المستوى */
+        .levels-container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .level-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            box-shadow: 0 5px 15px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .level-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px var(--shadow);
+        }
+        
+        .level-card.easy {
+            border-color: var(--easy);
+        }
+        
+        .level-card.medium {
+            border-color: var(--medium);
+        }
+        
+        .level-card.hard {
+            border-color: var(--hard);
+        }
+        
+        .level-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .level-card.easy .level-icon {
+            color: var(--easy);
+        }
+        
+        .level-card.medium .level-icon {
+            color: var(--medium);
+        }
+        
+        .level-card.hard .level-icon {
+            color: var(--hard);
+        }
+        
+        .level-title {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .level-desc {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        /* شاشة الاختبار */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .question-counter {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .score-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .question-text {
+            font-size: 2rem;
+            margin: 30px 0;
+            color: var(--dark);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        @media (min-width: 768px) {
+            .options-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        
+        .option-btn {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(67, 97, 238, 0.4);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        .option-btn:focus:not(:active)::before {
+            animation: ripple 1s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(40, 40);
+                opacity: 0;
+            }
+        }
+        
+        .option-btn:hover {
+            background-color: #e9ecef;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px var(--shadow);
+        }
+        
+        .option-btn.selected {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .option-btn.correct {
+            background-color: var(--success);
+            color: white;
+            border-color: var(--success);
+        }
+        
+        .option-btn.wrong {
+            background-color: var(--danger);
+            color: white;
+            border-color: var(--danger);
+        }
+        
+        /* شاشة النتائج */
+        .result-icon {
+            font-size: 5rem;
+            margin: 20px 0;
+            color: var(--primary);
+        }
+        
+        .result-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+        
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 0% 70%, #eee 70% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px auto;
+            position: relative;
+        }
+        
+        .score-inner {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .result-details {
+            background-color: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px 0;
+            text-align: right;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 1.2rem;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        /* الإعلانات */
+        .ad-container {
+            background-color: #f8f9fa;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px auto;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .ad-label {
+            background-color: #e9ecef;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            color: #495057;
+        }
+        
+        .ad-mock {
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(to right, #eee, #ddd);
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        /* عناصر التحكم في الصوت */
+        .sound-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+        
+        .sound-btn {
+            background-color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px var(--shadow);
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .sound-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .sound-btn.active {
+            color: white;
+            background-color: var(--primary);
+        }
+        
+        .sound-btn.music-btn-control {
+            color: var(--music);
+        }
+        
+        .sound-btn.music-btn-control.active {
+            color: white;
+            background-color: var(--music);
+        }
+        
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: var(--accent);
+            top: 0;
+            opacity: 0;
+            z-index: 99;
+        }
+        
+        /* رسوم متحركة للخلفية */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(67, 97, 238, 0.1);
+            animation: float 15s infinite ease-in-out;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.8;
+            }
+            50% {
+                transform: translateY(-100px) rotate(180deg);
+                opacity: 0.3;
+            }
+        }
+        
+        /* التجاوب مع الأجهزة المحمولة */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .start-screen, .level-screen, .quiz-screen, .result-screen {
+                padding: 25px;
+            }
+            
+            .question-text {
+                font-size: 1.6rem;
+            }
+            
+            .level-card {
+                padding: 20px;
+            }
+            
+            .score-circle {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .score-inner {
+                width: 120px;
+                height: 120px;
+                font-size: 2.2rem;
+            }
+            
+            .sound-controls {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .sound-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+        }
+        
+        /* شريط تقدم الموسيقى */
+        .music-progress {
+            width: 100%;
+            height: 4px;
+            background-color: #eee;
+            border-radius: 2px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .music-progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--music), #9d4edd);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+        
+        .music-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <!-- رسوم متحركة للخلفية -->
+    <div class="background-animation" id="backgroundAnimation"></div>
+    
+    <!-- عناصر التحكم في الصوت -->
+    <div class="sound-controls">
+        <div class="sound-btn active" id="musicToggle" title="تشغيل/إيقاف الموسيقى">
+            <i class="fas fa-music"></i>
+        </div>
+        <div class="sound-btn active" id="soundToggle" title="تشغيل/إيقاف الأصوات">
+            <i class="fas fa-volume-up"></i>
+        </div>
+    </div>
+    
+    <!-- الكونتينر الرئيسي -->
+    <div class="container">
+        <!-- الهيدر -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-language"></i>
+            </div>
+            <h1>اختبر لغتك الإنجليزية</h1>
+            <p class="subtitle">اختبار تفاعلي ممتع لقياس مستواك في اللغة الإنجليزية مع أسئلة متنوعة في مواضيع مختلفة</p>
+            
+            <!-- معلومات الموسيقى -->
+            <div class="music-info">
+                <span id="currentTrack">🎵 موسيقى هادئة</span>
+                <span id="currentTime">0:00</span>
+            </div>
+            <div class="music-progress">
+                <div class="music-progress-bar" id="musicProgress"></div>
+            </div>
+        </header>
+        
+        <!-- شاشة البداية -->
+        <section class="start-screen active" id="startScreen">
+            <h2>مرحباً بك في اختبار الإنجليزية!</h2>
+            <p>هذا الاختبار سيساعدك على تحسين مستواك في اللغة الإنجليزية من خلال أسئلة ممتعة ومتنوعة.</p>
+            <p>سيضم الاختبار 10 أسئلة في مواضيع مختلفة مثل الحيوانات، الفواكه، الألوان، والمفردات اليومية.</p>
+            
+            <!-- إعلان البداية -->
+            <div class="ad-container" id="adStart">
+                <div class="ad-label">إعلان</div>
+                <div class="ad-mock">Google AdSense</div>
+            </div>
+            
+            <button class="start-btn" id="startBtn">
+                <i class="fas fa-play start-icon"></i> ابدأ الاختبار
+            </button>
+            
+            <!-- أزرار الموسيقى -->
+            <div style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
+                <button class="music-btn" id="prevTrack">
+                    <i class="fas fa-step-backward"></i> السابق
+                </button>
+                <button class="music-btn" id="nextTrack">
+                    <i class="fas fa-step-forward"></i> التالي
+                </button>
+            </div>
+        </section>
+        
+        <!-- شاشة اختيار المستوى -->
+        <section class="level-screen" id="levelScreen">
+            <h2>اختر مستوى الصعوبة</h2>
+            <p>اختر المستوى المناسب لقدراتك. كل مستوى يحتوي على 10 أسئلة مختلفة في كل مرة.</p>
+            
+            <!-- إعلان اختيار المستوى -->
+            <div class="ad-container" id="adLevel">
+                <div class="ad-label">إعلان</div>
+                <div class="ad-mock">Google AdSense</div>
+            </div>
+            
+            <div class="levels-container">
+                <div class="level-card easy" data-level="easy">
+                    <div class="level-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3 class="level-title">سهل</h3>
+                    <p class="level-desc">مبتدئ - أسئلة بسيطة للمبتدئين في اللغة الإنجليزية</p>
+                    <div class="level-indicator">10 أسئلة</div>
+                </div>
+                
+                <div class="level-card medium" data-level="medium">
+                    <div class="level-icon">
+                        <i class="fas fa-mountain"></i>
+                    </div>
+                    <h3 class="level-title">متوسط</h3>
+                    <p class="level-desc">متوسط - أسئلة تحتاج معرفة أساسية بالإنجليزية</p>
+                    <div class="level-indicator">10 أسئلة</div>
+                </div>
+                
+                <div class="level-card hard" data-level="hard">
+                    <div class="level-icon">
+                        <i class="fas fa-fire"></i>
+                    </div>
+                    <h3 class="level-title">صعب</h3>
+                    <p class="level-desc">متقدم - أسئلة تتطلب معرفة جيدة بالإنجليزية</p>
+                    <div class="level-indicator">10 أسئلة</div>
+                </div>
+            </div>
+            
+            <button class="restart-btn" id="backBtn">
+                <i class="fas fa-arrow-right"></i> العودة
+            </button>
+        </section>
+        
+        <!-- شاشة الاختبار -->
+        <section class="quiz-screen" id="quizScreen">
+            <div class="quiz-header">
+                <div class="question-counter" id="questionCounter">سؤال 1 من 10</div>
+                <div class="score-container">
+                    <i class="fas fa-star"></i>
+                    <span id="score">0</span> / 10
+                </div>
+            </div>
+            
+            <div class="question-text" id="questionText">
+                ما معنى كلمة "Apple" بالعربية؟
+            </div>
+            
+            <!-- إعلان منتصف الاختبار -->
+            <div class="ad-container" id="adQuiz" style="display: none;">
+                <div class="ad-label">إعلان</div>
+                <div class="ad-mock">Google AdSense</div>
+            </div>
+            
+            <div class="options-container" id="optionsContainer">
+                <!-- سيتم تعبئة الخيارات بواسطة الجافاسكريبت -->
+            </div>
+            
+            <button class="submit-btn" id="submitBtn" disabled>تحقق من الإجابة</button>
+        </section>
+        
+        <!-- شاشة النتائج -->
+        <section class="result-screen" id="resultScreen">
+            <div class="result-icon">
+                <i class="fas fa-trophy"></i>
+            </div>
+            
+            <h2 class="result-title" id="resultTitle">نتيجة الاختبار</h2>
+            
+            <div class="score-circle">
+                <div class="score-inner" id="finalScore">7</div>
+            </div>
+            
+            <div class="result-details">
+                <div class="detail-row">
+                    <span>المستوى المختار:</span>
+                    <span id="resultLevel">سهل</span>
+                </div>
+                <div class="detail-row">
+                    <span>الإجابات الصحيحة:</span>
+                    <span id="correctAnswers">7</span>
+                </div>
+                <div class="detail-row">
+                    <span>الإجابات الخاطئة:</span>
+                    <span id="wrongAnswers">3</span>
+                </div>
+                <div class="detail-row">
+                    <span>النسبة المئوية:</span>
+                    <span id="percentage">70%</span>
+                </div>
+            </div>
+            
+            <!-- إعلان النتائج -->
+            <div class="ad-container" id="adResult">
+                <div class="ad-label">إعلان</div>
+                <div class="ad-mock">Google AdSense</div>
+            </div>
+            
+            <button class="restart-btn" id="restartBtn">
+                <i class="fas fa-redo"></i> اختبر مرة أخرى
+            </button>
+            
+            <button class="level-btn" id="newLevelBtn">
+                <i class="fas fa-layer-group"></i> اختبار مستوى مختلف
+            </button>
+        </section>
+        
+        <!-- الفوتر -->
+        <footer>
+            <div class="social-icons">
+                <a href="#" class="social-icon">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-icon">
+                    <i class="fab fa-github"></i>
+                </a>
+            </div>
+            <p>© 2023 اختبار اللغة الإنجليزية التفاعلي. جميع الحقوق محفوظة.</p>
+            <p>تم تصميم الموقع ليدعم إعلانات Google AdSense ويتوافق مع سياساتها.</p>
+        </footer>
+    </div>
+
+    <!-- ملفات الجافاسكريبت -->
+    <script>
+        // البيانات الأساسية للأسئلة
+        const questionsData = {
+            easy: [
+                {
+                    question: "ما معنى كلمة 'Apple' بالعربية؟",
+                    options: ["تفاح", "موز", "برتقال", "فراولة"],
+                    correct: 0,
+                    category: "فواكه"
+                },
+                {
+                    question: "ما معنى كلمة 'Dog' بالعربية؟",
+                    options: ["قطة", "حصان", "كلب", "أسد"],
+                    correct: 2,
+                    category: "حيوانات"
+                },
+                {
+                    question: "ما معنى كلمة 'Red' بالعربية؟",
+                    options: ["أزرق", "أخضر", "أصفر", "أحمر"],
+                    correct: 3,
+                    category: "ألوان"
+                },
+                {
+                    question: "ما معنى كلمة 'Chair' بالعربية؟",
+                    options: ["طاولة", "كرسي", "مصباح", "سرير"],
+                    correct: 1,
+                    category: "أثاث"
+                },
+                {
+                    question: "ما معنى كلمة 'School' بالعربية؟",
+                    options: ["جامعة", "مستشفى", "مدرسة", "مكتب"],
+                    correct: 2,
+                    category: "مباني"
+                },
+                {
+                    question: "ما معنى كلمة 'Sea' بالعربية؟",
+                    options: ["نهر", "بحر", "محيط", "بحيرة"],
+                    correct: 1,
+                    category: "ماء"
+                },
+                {
+                    question: "ما معنى كلمة 'Book' بالعربية؟",
+                    options: ["قلم", "دفتر", "كتاب", "مجلة"],
+                    correct: 2,
+                    category: "مدرسة"
+                },
+                {
+                    question: "ما معنى كلمة 'Sun' بالعربية؟",
+                    options: ["قمر", "نجم", "شمس", "سماء"],
+                    correct: 2,
+                    category: "طبيعة"
+                },
+                {
+                    question: "ما معنى كلمة 'House' بالعربية؟",
+                    options: ["شقة", "منزل", "فيلا", "قصر"],
+                    correct: 1,
+                    category: "مباني"
+                },
+                {
+                    question: "ما معنى كلمة 'Water' بالعربية؟",
+                    options: ["نار", "هواء", "تراب", "ماء"],
+                    correct: 3,
+                    category: "طبيعة"
+                }
+            ],
+            medium: [
+                {
+                    question: "ما معنى كلمة 'University' بالعربية؟",
+                    options: ["كلية", "مدرسة", "جامعة", "معهد"],
+                    correct: 2,
+                    category: "تعليم"
+                },
+                {
+                    question: "ما معنى كلمة 'Elephant' بالعربية؟",
+                    options: ["زرافة", "فيل", "حمار وحشي", "فرس النهر"],
+                    correct: 1,
+                    category: "حيوانات"
+                },
+                {
+                    question: "ما معنى كلمة 'Grapes' بالعربية؟",
+                    options: ["عنب", "تين", "رمان", "كيوي"],
+                    correct: 0,
+                    category: "فواكه"
+                },
+                {
+                    question: "ما معنى كلمة 'Lamp' بالعربية؟",
+                    options: ["مروحة", "تلفاز", "مصباح", "راديو"],
+                    correct: 2,
+                    category: "أثاث"
+                },
+                {
+                    question: "ما معنى كلمة 'Library' بالعربية؟",
+                    options: ["مكتبة", "قاعة", "مسرح", "معرض"],
+                    correct: 0,
+                    category: "مباني"
+                },
+                {
+                    question: "ما معنى كلمة 'Dolphin' بالعربية؟",
+                    options: ["قرش", "حوت", "دلفين", "سمك السلمون"],
+                    correct: 2,
+                    category: "حيوانات بحرية"
+                },
+                {
+                    question: "ما معنى كلمة 'Purple' بالعربية؟",
+                    options: ["بنفسجي", "زهري", "بني", "رمادي"],
+                    correct: 0,
+                    category: "ألوان"
+                },
+                {
+                    question: "ما معنى كلمة 'Desk' بالعربية؟",
+                    options: ["كرسي", "مكتب", "خزانة", "رف"],
+                    correct: 1,
+                    category: "أثاث"
+                },
+                {
+                    question: "ما معنى كلمة 'Hospital' بالعربية؟",
+                    options: ["صيدلية", "عيادة", "مستشفى", "مختبر"],
+                    correct: 2,
+                    category: "مباني"
+                },
+                {
+                    question: "ما معنى كلمة 'Strawberry' بالعربية؟",
+                    options: ["توت", "فراولة", "كرز", "عليق"],
+                    correct: 1,
+                    category: "فواكه"
+                }
+            ],
+            hard: [
+                {
+                    question: "ما معنى كلمة 'Chandelier' بالعربية؟",
+                    options: ["مصباح طاولة", "ثريا", "مصباح حائط", "إضاءة LED"],
+                    correct: 1,
+                    category: "أثاث"
+                },
+                {
+                    question: "ما معنى كلمة 'Avocado' بالعربية؟",
+                    options: ["أفوكادو", "مانجو", "بابايا", "جاك فروت"],
+                    correct: 0,
+                    category: "فواكه"
+                },
+                {
+                    question: "ما معنى كلمة 'Octopus' بالعربية؟",
+                    options: ["قنديل البحر", "أخطبوط", "نجم البحر", "حبار"],
+                    correct: 1,
+                    category: "حيوانات بحرية"
+                },
+                {
+                    question: "ما معنى كلمة 'Turquoise' بالعربية؟",
+                    options: ["فيروزي", "كحلي", "فوشي", "أكوامارين"],
+                    correct: 0,
+                    category: "ألوان"
+                },
+                {
+                    question: "ما معنى كلمة 'Skyscraper' بالعربية؟",
+                    options: ["برج", "ناطحة سحاب", "مجمع سكني", "قلعة"],
+                    correct: 1,
+                    category: "مباني"
+                },
+                {
+                    question: "ما معنى كلمة 'Lectern' بالعربية؟",
+                    options: ["منصة", "منبر", "طاولة عرض", "سبورة"],
+                    correct: 1,
+                    category: "مدرسة"
+                },
+                {
+                    question: "ما معنى كلمة 'Platypus' بالعربية؟",
+                    options: ["خلد الماء", "قنفذ", "باندا", "كوالا"],
+                    correct: 0,
+                    category: "حيوانات"
+                },
+                {
+                    question: "ما معنى كلمة 'Crimson' بالعربية؟",
+                    options: ["قرمزي", "كستنائي", "زيتوني", "عسلي"],
+                    correct: 0,
+                    category: "ألوان"
+                },
+                {
+                    question: "ما معنى كلمة 'Archipelago' بالعربية؟",
+                    options: ["شبه جزيرة", "أرخبيل", "قارة", "خلجان"],
+                    correct: 1,
+                    category: "جغرافيا"
+                },
+                {
+                    question: "ما معنى كلمة 'Amphitheater' بالعربية؟",
+                    options: ["مسرح دائري", "قاعة محاضرات", "سينما", "مدرج"],
+                    correct: 3,
+                    category: "مباني"
+                }
+            ]
+        };
+
+        // قائمة الموسيقى
+        const musicTracks = [
+            {
+                name: "موسيقى هادئة",
+                url: "https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3"
+            },
+            {
+                name: "موسيقى إيجابية",
+                url: "https://assets.mixkit.co/music/preview/mixkit-driving-ambition-32.mp3"
+            },
+            {
+                name: "موسيقى تعليمية",
+                url: "https://assets.mixkit.co/music/preview/mixkit-school-days-164.mp3"
+            },
+            {
+                name: "موسيقى التفاؤل",
+                url: "https://assets.mixkit.co/music/preview/mixkit-a-very-happy-christmas-897.mp3"
+            }
+        ];
+
+        // المتغيرات العامة
+        let currentLevel = '';
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOption = null;
+        let soundEnabled = true;
+        let musicEnabled = true;
+        let currentTrackIndex = 0;
+        let backgroundMusic = null;
+
+        // عناصر DOM
+        const startScreen = document.getElementById('startScreen');
+        const levelScreen = document.getElementById('levelScreen');
+        const quizScreen = document.getElementById('quizScreen');
+        const resultScreen = document.getElementById('resultScreen');
+        
+        const startBtn = document.getElementById('startBtn');
+        const backBtn = document.getElementById('backBtn');
+        const levelCards = document.querySelectorAll('.level-card');
+        const submitBtn = document.getElementById('submitBtn');
+        const restartBtn = document.getElementById('restartBtn');
+        const newLevelBtn = document.getElementById('newLevelBtn');
+        const prevTrackBtn = document.getElementById('prevTrack');
+        const nextTrackBtn = document.getElementById('nextTrack');
+        
+        const questionCounter = document.getElementById('questionCounter');
+        const scoreElement = document.getElementById('score');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        
+        const resultLevel = document.getElementById('resultLevel');
+        const correctAnswers = document.getElementById('correctAnswers');
+        const wrongAnswers = document.getElementById('wrongAnswers');
+        const percentage = document.getElementById('percentage');
+        const finalScore = document.getElementById('finalScore');
+        const resultTitle = document.getElementById('resultTitle');
+        
+        const soundToggle = document.getElementById('soundToggle');
+        const musicToggle = document.getElementById('musicToggle');
+        const backgroundAnimation = document.getElementById('backgroundAnimation');
+        const currentTrackElement = document.getElementById('currentTrack');
+        const currentTimeElement = document.getElementById('currentTime');
+        const musicProgress = document.getElementById('musicProgress');
+        
+        // عناصر الإعلانات
+        const adStart = document.getElementById('adStart');
+        const adLevel = document.getElementById('adLevel');
+        const adQuiz = document.getElementById('adQuiz');
+        const adResult = document.getElementById('adResult');
+
+        // الأصوات
+        const correctSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-correct-answer-tone-2870.mp3');
+        const wrongSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-wrong-answer-fail-notification-946.mp3');
+        const clickSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3');
+        const winSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3');
+        const tapSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-plastic-bubble-click-1124.mp3');
+        const popSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-bubble-pop-up-3004.mp3');
+        const switchSound = new Audio('https://assets.mixkit.co/sfx/preview/mixkit-light-switch-click-1161.mp3');
+        
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            // إنشاء الرسوم المتحركة للخلفية
+            createBackgroundAnimation();
+            
+            // تهيئة الموسيقى
+            initMusic();
+            
+            // تشغيل إعلان البداية
+            showAd(adStart);
+            
+            // إضافة مستمعي الأحداث
+            startBtn.addEventListener('click', startQuiz);
+            backBtn.addEventListener('click', goBack);
+            submitBtn.addEventListener('click', checkAnswer);
+            restartBtn.addEventListener('click', restartQuiz);
+            newLevelBtn.addEventListener('click', chooseNewLevel);
+            soundToggle.addEventListener('click', toggleSound);
+            musicToggle.addEventListener('click', toggleMusic);
+            prevTrackBtn.addEventListener('click', prevTrack);
+            nextTrackBtn.addEventListener('click', nextTrack);
+            
+            // إضافة تأثيرات النقر على جميع الأزرار
+            document.querySelectorAll('button').forEach(button => {
+                button.addEventListener('click', function() {
+                    playSound(tapSound);
+                });
+                
+                button.addEventListener('mousedown', function() {
+                    playSound(popSound);
+                });
+            });
+            
+            // إضافة مستمعي الأحداث لبطاقات المستويات
+            levelCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // تشغيل إعلان اختيار المستوى
+                    showAd(adLevel);
+                    
+                    // بعد تأخير بسيط لرؤية الإعلان
+                    setTimeout(() => {
+                        selectLevel(this.dataset.level);
+                    }, 500);
+                });
+            });
+            
+            // إضافة تأثيرات النقر على خيارات الأسئلة
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('option-btn')) {
+                    playSound(switchSound);
+                }
+            });
+            
+            // تهيئة الأسئلة بشكل عشوائي
+            shuffleQuestions();
+        });
+
+        // إنشاء الرسوم المتحركة للخلفية
+        function createBackgroundAnimation() {
+            const colors = ['#4361ee', '#3a0ca3', '#f72585', '#4cc9f0', '#2ec4b6'];
+            
+            for (let i = 0; i < 20; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                
+                const size = Math.random() * 100 + 50;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${Math.random() * 100}%`;
+                bubble.style.top = `${Math.random() * 100}%`;
+                bubble.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                bubble.style.opacity = Math.random() * 0.2 + 0.05;
+                bubble.style.animationDelay = `${Math.random() * 5}s`;
+                bubble.style.animationDuration = `${Math.random() * 10 + 10}s`;
+                
+                backgroundAnimation.appendChild(bubble);
+            }
+        }
+
+        // تهيئة الموسيقى
+        function initMusic() {
+            backgroundMusic = new Audio(musicTracks[currentTrackIndex].url);
+            backgroundMusic.loop = true;
+            backgroundMusic.volume = 0.3;
+            
+            // تحديث معلومات الموسيقى
+            updateMusicInfo();
+            
+            // بدء تشغيل الموسيقى
+            if (musicEnabled) {
+                backgroundMusic.play().catch(e => {
+                    console.log("لم يتم تشغيل الموسيقى تلقائياً:", e);
+                    // في بعض المتصفحات، يجب التفاعل مع المستخدم أولاً
+                    document.addEventListener('click', function initMusicOnClick() {
+                        if (musicEnabled && backgroundMusic.paused) {
+                            backgroundMusic.play();
+                        }
+                        document.removeEventListener('click', initMusicOnClick);
+                    });
+                });
+            }
+            
+            // تحديث شريط التقدم
+            backgroundMusic.addEventListener('timeupdate', updateMusicProgress);
+            
+            // عند انتهاء الموسيقى (لغير التكرار)
+            backgroundMusic.addEventListener('ended', nextTrack);
+        }
+
+        // تحديث معلومات الموسيقى
+        function updateMusicInfo() {
+            currentTrackElement.textContent = `🎵 ${musicTracks[currentTrackIndex].name}`;
+        }
+
+        // تحديث شريط تقدم الموسيقى
+        function updateMusicProgress() {
+            if (!backgroundMusic) return;
+            
+            const progress = (backgroundMusic.currentTime / backgroundMusic.duration) * 100;
+            musicProgress.style.width = `${progress}%`;
+            
+            // تحديث الوقت الحالي
+            const minutes = Math.floor(backgroundMusic.currentTime / 60);
+            const seconds = Math.floor(backgroundMusic.currentTime % 60);
+            currentTimeElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // الموسيقى السابقة
+        function prevTrack() {
+            playSound(switchSound);
+            currentTrackIndex = (currentTrackIndex - 1 + musicTracks.length) % musicTracks.length;
+            changeTrack();
+        }
+
+        // الموسيقى التالية
+        function nextTrack() {
+            playSound(switchSound);
+            currentTrackIndex = (currentTrackIndex + 1) % musicTracks.length;
+            changeTrack();
+        }
+
+        // تغيير المقطوعة الموسيقية
+        function changeTrack() {
+            if (!backgroundMusic) return;
+            
+            const wasPlaying = !backgroundMusic.paused;
+            const currentTime = backgroundMusic.currentTime;
+            
+            backgroundMusic.src = musicTracks[currentTrackIndex].url;
+            backgroundMusic.loop = true;
+            
+            updateMusicInfo();
+            
+            if (wasPlaying && musicEnabled) {
+                backgroundMusic.play().catch(e => console.log("لم يتم تشغيل الموسيقى:", e));
+            }
+        }
+
+        // بدء الاختبار
+        function startQuiz() {
+            playSound(clickSound);
+            startScreen.classList.remove('active');
+            levelScreen.classList.add('active');
+        }
+
+        // العودة للشاشة الرئيسية
+        function goBack() {
+            playSound(clickSound);
+            levelScreen.classList.remove('active');
+            startScreen.classList.add('active');
+        }
+
+        // اختيار المستوى
+        function selectLevel(level) {
+            playSound(clickSound);
+            currentLevel = level;
+            
+            // اختيار الأسئلة العشوائية للمستوى المحدد
+            currentQuestions = getRandomQuestions(level, 10);
+            currentQuestionIndex = 0;
+            score = 0;
+            
+            // تحديث الشاشات
+            levelScreen.classList.remove('active');
+            quizScreen.classList.add('active');
+            
+            // تحديث عرض النقاط
+            scoreElement.textContent = score;
+            
+            // عرض السؤال الأول
+            displayQuestion();
+        }
+
+        // عرض السؤال الحالي
+        function displayQuestion() {
+            const question = currentQuestions[currentQuestionIndex];
+            
+            // تحديث عداد السؤال
+            questionCounter.textContent = `سؤال ${currentQuestionIndex + 1} من 10`;
+            
+            // عرض نص السؤال
+            questionText.textContent = question.question;
+            
+            // تفريغ وعرض الخيارات
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.dataset.index = index;
+                button.tabIndex = 0; // لجعلها قابلة للتركيز
+                
+                button.addEventListener('click', function() {
+                    selectOption(this);
+                });
+                
+                // إضافة تأثير النقر عند الضغط على مفتاح Enter
+                button.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        selectOption(this);
+                    }
+                });
+                
+                optionsContainer.appendChild(button);
+            });
+            
+            // إعادة تعيين زر التحقق
+            submitBtn.disabled = true;
+            selectedOption = null;
+            
+            // عرض إعلان منتصف الاختبار عند السؤال الخامس
+            if (currentQuestionIndex === 4) {
+                showAd(adQuiz);
+            }
+        }
+
+        // اختيار خيار
+        function selectOption(optionElement) {
+            playSound(clickSound);
+            
+            // إلغاء تحديد الخيار السابق
+            const prevSelected = document.querySelector('.option-btn.selected');
+            if (prevSelected) {
+                prevSelected.classList.remove('selected');
+            }
+            
+            // تحديد الخيار الجديد
+            optionElement.classList.add('selected');
+            selectedOption = parseInt(optionElement.dataset.index);
+            submitBtn.disabled = false;
+            
+            // تأثير رipple
+            optionElement.focus();
+        }
+
+        // التحقق من الإجابة
+        function checkAnswer() {
+            if (selectedOption === null) return;
+            
+            const question = currentQuestions[currentQuestionIndex];
+            const options = document.querySelectorAll('.option-btn');
+            
+            // تعطيل جميع الخيارات
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            // عرض الإجابة الصحيحة والخاطئة
+            options.forEach((option, index) => {
+                if (index === question.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedOption && selectedOption !== question.correct) {
+                    option.classList.add('wrong');
+                }
+            });
+            
+            // زيادة النقاط إذا كانت الإجابة صحيحة
+            if (selectedOption === question.correct) {
+                score++;
+                scoreElement.textContent = score;
+                playSound(correctSound);
+                
+                // تأثير مرئي للإجابة الصحيحة
+                document.querySelectorAll('.sound-btn').forEach(btn => {
+                    btn.classList.add('pulse');
+                });
+                setTimeout(() => {
+                    document.querySelectorAll('.sound-btn').forEach(btn => {
+                        btn.classList.remove('pulse');
+                    });
+                }, 500);
+            } else {
+                playSound(wrongSound);
+            }
+            
+            // تفعيل زر التالي
+            submitBtn.textContent = 'التالي';
+            submitBtn.onclick = nextQuestion;
+        }
+
+        // الانتقال للسؤال التالي
+        function nextQuestion() {
+            playSound(clickSound);
+            currentQuestionIndex++;
+            
+            // إذا انتهت الأسئلة، عرض النتائج
+            if (currentQuestionIndex >= currentQuestions.length) {
+                showResults();
+            } else {
+                // الانتقال للسؤال التالي
+                submitBtn.textContent = 'تحقق من الإجابة';
+                submitBtn.onclick = checkAnswer;
+                displayQuestion();
+            }
+        }
+
+        // عرض النتائج
+        function showResults() {
+            // تشغيل إعلان النتائج
+            showAd(adResult);
+            
+            // تشغيل صوت الفوز
+            playSound(winSound);
+            
+            // تشغيل موسيقى النصر
+            if (musicEnabled) {
+                const victorySound = new Audio('https://assets.mixkit.co/music/preview/mixkit-winning-silver-668.mp3');
+                victorySound.volume = 0.5;
+                victorySound.play();
+            }
+            
+            // إنشاء تأثير الكونفيتي
+            createConfetti();
+            
+            // تحديث الشاشات
+            quizScreen.classList.remove('active');
+            resultScreen.classList.add('active');
+            
+            // حساب النتائج
+            const correct = score;
+            const wrong = 10 - score;
+            const percent = (score / 10) * 100;
+            
+            // تحديث عناصر النتائج
+            resultLevel.textContent = getLevelName(currentLevel);
+            correctAnswers.textContent = correct;
+            wrongAnswers.textContent = wrong;
+            percentage.textContent = `${percent}%`;
+            finalScore.textContent = score;
+            
+            // تحديث عنوان النتيجة
+            let title = '';
+            if (percent >= 90) title = 'ممتاز! أنت رائع!';
+            else if (percent >= 70) title = 'جيد جداً! أحسنت!';
+            else if (percent >= 50) title = 'جيد! استمر في التعلم!';
+            else title = 'حاول مرة أخرى! لا تستسلم!';
+            
+            resultTitle.textContent = title;
+            
+            // تحديث دائرة النتيجة
+            const scoreCircle = document.querySelector('.score-circle');
+            scoreCircle.style.background = `conic-gradient(var(--primary) 0% ${percent}%, #eee ${percent}% 100%)`;
+        }
+
+        // إعادة الاختبار
+        function restartQuiz() {
+            playSound(clickSound);
+            
+            // إعادة تعيين المتغيرات
+            currentQuestionIndex = 0;
+            score = 0;
+            
+            // اختيار أسئلة عشوائية جديدة
+            currentQuestions = getRandomQuestions(currentLevel, 10);
+            
+            // تحديث الشاشات
+            resultScreen.classList.remove('active');
+            quizScreen.classList.add('active');
+            
+            // تحديث عرض النقاط
+            scoreElement.textContent = score;
+            
+            // عرض السؤال الأول
+            displayQuestion();
+        }
+
+        // اختيار مستوى جديد
+        function chooseNewLevel() {
+            playSound(clickSound);
+            resultScreen.classList.remove('active');
+            levelScreen.classList.add('active');
+        }
+
+        // الحصول على اسم المستوى
+        function getLevelName(level) {
+            switch(level) {
+                case 'easy': return 'سهل';
+                case 'medium': return 'متوسط';
+                case 'hard': return 'صعب';
+                default: return 'غير محدد';
+            }
+        }
+
+        // الحصول على أسئلة عشوائية
+        function getRandomQuestions(level, count) {
+            const allQuestions = [...questionsData[level]];
+            const shuffled = [...allQuestions].sort(() => Math.random() - 0.5);
+            return shuffled.slice(0, count);
+        }
+
+        // خلط الأسئلة
+        function shuffleQuestions() {
+            for (const level in questionsData) {
+                questionsData[level] = [...questionsData[level]].sort(() => Math.random() - 0.5);
+            }
+        }
+
+        // تشغيل الصوت
+        function playSound(sound) {
+            if (!soundEnabled) return;
+            
+            sound.currentTime = 0;
+            sound.volume = sound === winSound ? 0.7 : 0.5;
+            sound.play().catch(e => console.log("لم يتم تشغيل الصوت:", e));
+        }
+
+        // تبديل الصوت
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const icon = soundToggle.querySelector('i');
+            
+            if (soundEnabled) {
+                icon.className = 'fas fa-volume-up';
+                soundToggle.classList.add('active');
+                playSound(clickSound);
+            } else {
+                icon.className = 'fas fa-volume-mute';
+                soundToggle.classList.remove('active');
+            }
+        }
+
+        // تبديل الموسيقى
+        function toggleMusic() {
+            musicEnabled = !musicEnabled;
+            const icon = musicToggle.querySelector('i');
+            
+            if (musicEnabled) {
+                icon.className = 'fas fa-music';
+                musicToggle.classList.add('active');
+                if (backgroundMusic.paused) {
+                    backgroundMusic.play().catch(e => console.log("لم يتم تشغيل الموسيقى:", e));
+                }
+                playSound(clickSound);
+            } else {
+                icon.className = 'fas fa-music';
+                musicToggle.classList.remove('active');
+                backgroundMusic.pause();
+            }
+        }
+
+        // عرض الإعلان
+        function showAd(adElement) {
+            // في التطبيق الحقيقي، هنا سيتم استدعاء API إعلانات Google
+            // ولكننا سنعرض محاكاة مرئية فقط
+            adElement.style.display = 'flex';
+            
+            // إخفاء الإعلان بعد 3 ثواني (محاكاة)
+            setTimeout(() => {
+                adElement.style.display = 'none';
+            }, 3000);
+        }
+
+        // إنشاء تأثير الكونفيتي
+        function createConfetti() {
+            const colors = ['#4361ee', '#3a0ca3', '#f72585', '#4cc9f0', '#2ec4b6', '#7209b7', '#ffba08'];
+            
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.opacity = '1';
+                confetti.style.width = `${Math.random() * 15 + 5}px`;
+                confetti.style.height = `${Math.random() * 15 + 5}px`;
+                
+                document.body.appendChild(confetti);
+                
+                // حركة الكونفيتي
+                const animation = confetti.animate([
+                    { top: '0px', transform: 'rotate(0deg)', opacity: 1 },
+                    { top: `${Math.random() * 100 + 100}vh`, transform: `rotate(${Math.random() * 720}deg)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 3000 + 2000,
+                    easing: 'cubic-bezier(0.215, 0.610, 0.355, 1)'
+                });
+                
+                // إزالة الكونفيتي بعد انتهاء الحركة
+                animation.onfinish = () => {
+                    confetti.remove();
+                };
+            }
+        }
+    </script>
+</body>
+</html>
